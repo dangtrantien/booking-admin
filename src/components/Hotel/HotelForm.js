@@ -36,41 +36,32 @@ const HotelForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // Add new product
+    let url = 'https://booking-server-6rik.onrender.com/admin/hotel';
+    let method = 'POST';
+
+    // Edit product
     if (location.state) {
-      sendRequest({
-        url: `https://booking-server-6rik.onrender.com/admin/hotel/${location.state.hotelId}`,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: hotel,
-      })
-        .then((result) => {
-          if (result.error) {
-            return alert(result.message);
-          }
-
-          return navigate('/hotels', { replace: true });
-        })
-        .catch((err) => console.log(err));
-    } else {
-      sendRequest({
-        url: 'https://booking-server-6rik.onrender.com/admin/hotel',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: hotel,
-      })
-        .then((result) => {
-          if (result.error) {
-            return alert(result.message);
-          }
-
-          return navigate('/hotels', { replace: true });
-        })
-        .catch((err) => console.log(err));
+      url = `https://booking-server-6rik.onrender.com/admin/hotel/${location.state.hotelId}`;
+      method = 'PUT';
     }
+
+    sendRequest({
+      url: url,
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: hotel,
+    })
+      .then((result) => {
+        if (result.error) {
+          return alert(result.message);
+        }
+
+        return navigate('/hotels', { replace: true });
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {

@@ -43,41 +43,32 @@ const RoomForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // Add new product
+    let url = 'https://booking-server-6rik.onrender.com/admin/room';
+    let method = 'POST';
+
+    // Edit product
     if (location.state) {
-      sendRequest({
-        url: `https://booking-server-6rik.onrender.com/admin/room/${location.state.roomId}`,
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: room,
-      })
-        .then((result) => {
-          if (result.error) {
-            return alert(result.message);
-          }
-
-          return navigate('/rooms', { replace: true });
-        })
-        .catch((err) => console.log(err));
-    } else {
-      sendRequest({
-        url: 'https://booking-server-6rik.onrender.com/admin/room',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: room,
-      })
-        .then((result) => {
-          if (result.error) {
-            return alert(result.message);
-          }
-
-          return navigate('/rooms', { replace: true });
-        })
-        .catch((err) => console.log(err));
+      url = `https://booking-server-6rik.onrender.com/admin/room/${location.state.roomId}`;
+      method = 'PUT';
     }
+
+    sendRequest({
+      url: url,
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: room,
+    })
+      .then((result) => {
+        if (result.error) {
+          return alert(result.message);
+        }
+
+        return navigate('/rooms', { replace: true });
+      })
+      .catch((err) => console.log(err));
   };
 
   // Lấy data của tất cả các hotel
