@@ -87,6 +87,11 @@ th div {
   cursor: pointer;
 }
 
+.pagination button:disabled {
+  color: var(--color-gray-200);
+  cursor: default;
+}
+
 .status {
   width: fit-content;
   padding: 0.5rem;
