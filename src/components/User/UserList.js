@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import useHttp from '../../hooks/use-http';
+import { host } from '../../store/store';
 
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
@@ -9,36 +10,47 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 const UserList = () => {
   const sendRequest = useHttp();
 
-  const [users, setUsers] = useState({});
+  const [totalUser, setTotalUser] = useState(0);
   const [currentUsers, setCurrentUsers] = useState([]);
   const [page, setPage] = useState(1);
 
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => (prev === users.result?.length ? 1 : prev + 1));
+      setPage((prev) => prev + 1);
     } else {
-      setPage((prev) => (prev === 1 ? users.result?.length : prev - 1));
+      setPage((prev) => prev - 1);
     }
   };
 
+  // Set total user
   useEffect(() => {
-    sendRequest({ url: 'https://booking-server-6rik.onrender.com/admin/users' })
+    sendRequest({ url: `${host}/admin/users` })
       .then((result) => {
         if (result.error) {
           return alert(result.message);
         }
 
-        setUsers(result);
+        setTotalUser(result.length);
       })
       .catch((err) => console.log(err));
   }, [sendRequest]);
 
   // Render value theo page
   useEffect(() => {
-    if (users.result) {
-      setCurrentUsers(users.result[page - 1].result);
-    }
-  }, [users, page]);
+    sendRequest({
+      url: `${host}/admin/users?page=${page}&limit=9`,
+    })
+      .then((result) => {
+        if (result.error) {
+          setPage((prev) => prev - 1);
+
+          return alert(result.message);
+        }
+
+        setCurrentUsers(result);
+      })
+      .catch((err) => console.log(err));
+  }, [sendRequest, page]);
 
   return (
     <table>
@@ -95,12 +107,13 @@ const UserList = () => {
             <div className='pagination'>
               <p>
                 1{currentUsers.length > 1 ? `-${currentUsers.length}` : ''} of{' '}
-                {users.total}
+                {totalUser}
               </p>
 
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
+                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

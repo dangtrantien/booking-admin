@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import useHttp from '../../hooks/use-http';
+import { host } from '../../store/store';
 
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
@@ -9,44 +10,49 @@ import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 const TransactionList = () => {
   const sendRequest = useHttp();
 
-  const [transactions, setTransactions] = useState({});
+  const [totalTransaction, setTotalTransaction] = useState(0);
   const [currentTransactions, setCurrentTransactions] = useState([]);
   const [page, setPage] = useState(1);
 
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => (prev === transactions.result?.length ? 1 : prev + 1));
+      setPage((prev) => prev + 1);
     } else {
-      setPage((prev) => (prev === 1 ? transactions.result?.length : prev - 1));
+      setPage((prev) => prev - 1);
     }
   };
 
+  // Set total transaction
   useEffect(() => {
     sendRequest({
-      url: 'https://booking-server-6rik.onrender.com/admin/transactions',
+      url: `${host}/admin/transactions`,
     })
       .then((result) => {
         if (result.error) {
           return alert(result.message);
         }
 
-        setTransactions(result);
+        setTotalTransaction(result.length);
       })
       .catch((err) => console.log(err));
   }, [sendRequest]);
 
   // Render value theo page
   useEffect(() => {
-    if (transactions.result) {
-      const newResult = transactions.result[page - 1].result?.map((resData) => {
-        const newRoomList = resData.room?.map((r) => r.roomNumber);
+    sendRequest({
+      url: `${host}/admin/transactions?page=${page}&limit=9`,
+    })
+      .then((result) => {
+        if (result.error) {
+          setPage((prev) => prev - 1);
 
-        return { ...resData, room: newRoomList };
-      });
+          return alert(result.message);
+        }
 
-      setCurrentTransactions(newResult);
-    }
-  }, [transactions, page]);
+        setCurrentTransactions(result);
+      })
+      .catch((err) => console.log(err));
+  }, [sendRequest, page]);
 
   return (
     <table>
@@ -128,12 +134,13 @@ const TransactionList = () => {
                 {currentTransactions.length > 1
                   ? `-${currentTransactions.length}`
                   : ''}{' '}
-                of {transactions.total}
+                of {totalTransaction}
               </p>
 
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
+                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

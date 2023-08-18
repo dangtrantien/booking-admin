@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import Card from '../UI/Card';
 import useHttp from '../../hooks/use-http';
+import { host } from '../../store/store';
 
 import styles from './RecentTransaction.module.css';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
@@ -15,7 +16,7 @@ const RecentTransaction = () => {
 
   useEffect(() => {
     sendRequest({
-      url: 'https://booking-server-6rik.onrender.com/admin/recentTransactions',
+      url: `${host}/admin/recentTransactions`,
     })
       .then((result) => {
         if (result.error) {
@@ -118,11 +119,11 @@ const RecentTransaction = () => {
                   {transactions.length}
                 </p>
 
-                <button type='button'>
+                <button type='button' disabled>
                   <FaAngleLeft />
                 </button>
 
-                <button type='button'>
+                <button type='button' disabled>
                   <FaAngleRight />
                 </button>
               </div>

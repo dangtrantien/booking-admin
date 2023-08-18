@@ -6,6 +6,7 @@ import Card from '../UI/Card';
 import useHttp from '../../hooks/use-http';
 import { hotelActions } from '../../store/hotel/hotel-slice';
 import { getHotel } from '../../store/hotel/hotel-actions';
+import { host } from '../../store/store';
 
 import styles from './HotelForm.module.css';
 
@@ -37,12 +38,12 @@ const HotelForm = () => {
     e.preventDefault();
 
     // Add new product
-    let url = 'https://booking-server-6rik.onrender.com/admin/hotel';
+    let url = `${host}/admin/hotel`;
     let method = 'POST';
 
     // Edit product
     if (location.state) {
-      url = `https://booking-server-6rik.onrender.com/admin/hotel/${location.state.hotelId}`;
+      url = `${host}/admin/hotel/${location.state.hotelId}`;
       method = 'PUT';
     }
 

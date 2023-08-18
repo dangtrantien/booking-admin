@@ -6,6 +6,7 @@ import Card from '../UI/Card';
 import useHttp from '../../hooks/use-http';
 import { roomActions } from '../../store/room/room-slice';
 import { getRoom } from '../../store/room/room-actions';
+import { host } from '../../store/store';
 
 import styles from './RoomForm.module.css';
 
@@ -44,12 +45,12 @@ const RoomForm = () => {
     e.preventDefault();
 
     // Add new product
-    let url = 'https://booking-server-6rik.onrender.com/admin/room';
+    let url = `${host}/admin/room`;
     let method = 'POST';
 
     // Edit product
     if (location.state) {
-      url = `https://booking-server-6rik.onrender.com/admin/room/${location.state.roomId}`;
+      url = `${host}/admin/room/${location.state.roomId}`;
       method = 'PUT';
     }
 
@@ -73,7 +74,7 @@ const RoomForm = () => {
 
   // Lấy data của tất cả các hotel
   useEffect(() => {
-    sendRequest({ url: 'https://booking-server-6rik.onrender.com/hotels' })
+    sendRequest({ url: `${host}/hotels` })
       .then((result) => {
         if (result.error) {
           return alert(result.message);

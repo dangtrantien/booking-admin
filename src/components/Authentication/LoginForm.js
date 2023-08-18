@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useHttp from '../../hooks/use-http';
+import { host } from '../../store/store';
 
 import styles from './AuthWrapper.module.css';
 
@@ -29,7 +30,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     sendRequest({
-      url: 'https://booking-server-6rik.onrender.com/login',
+      url: `${host}/login`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

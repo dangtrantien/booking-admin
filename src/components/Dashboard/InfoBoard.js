@@ -1,4 +1,5 @@
 import InfoBoardItem from './InfoBoardItem';
+import { host } from '../../store/store';
 
 import styles from './InfoBoard.module.css';
 import { HiOutlineUser, HiOutlineShoppingCart } from 'react-icons/hi';
@@ -10,7 +11,7 @@ import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
 const infoList = [
   {
     id: 'i1',
-    url: 'https://booking-server-6rik.onrender.com/admin/users',
+    url: `${host}/admin/users`,
     title: 'Users',
     icon: (
       <div
@@ -24,7 +25,7 @@ const infoList = [
   },
   {
     id: 'i2',
-    url: 'https://booking-server-6rik.onrender.com/admin/transactions',
+    url: `${host}/admin/transactions`,
     title: 'Orders',
     icon: (
       <div
@@ -38,7 +39,7 @@ const infoList = [
   },
   {
     id: 'i3',
-    url: 'https://booking-server-6rik.onrender.com/admin/earnings',
+    url: `${host}/admin/earnings`,
     title: 'Earnings',
     icon: (
       <div
@@ -52,7 +53,7 @@ const infoList = [
   },
   {
     id: 'i4',
-    url: 'https://booking-server-6rik.onrender.com/admin/balances',
+    url: `${host}/admin/balances`,
     title: 'Balance',
     icon: (
       <div

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useHttp from '../../hooks/use-http';
+import { host } from '../../store/store';
 
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
@@ -11,15 +12,15 @@ const HotelList = () => {
   const sendRequest = useHttp();
   const navigate = useNavigate();
 
-  const [hotels, setHotels] = useState({});
+  const [totalHotel, setTotalHotel] = useState(0);
   const [currentHotels, setCurrentHotels] = useState([]);
   const [page, setPage] = useState(1);
 
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => (prev === hotels.result?.length ? 1 : prev + 1));
+      setPage((prev) => prev + 1);
     } else {
-      setPage((prev) => (prev === 1 ? hotels.result?.length : prev - 1));
+      setPage((prev) => prev - 1);
     }
   };
 
@@ -32,7 +33,7 @@ const HotelList = () => {
       window.confirm("Are you sure? You won't be able to revert this!") === true
     ) {
       sendRequest({
-        url: `https://booking-server-6rik.onrender.com/admin/hotel/${hotelId}`,
+        url: `${host}/admin/hotel/${hotelId}`,
         method: 'DELETE',
       })
         .then((result) => {
@@ -44,26 +45,37 @@ const HotelList = () => {
     }
   };
 
+  // Set total hotel
   useEffect(() => {
     sendRequest({
-      url: 'https://booking-server-6rik.onrender.com/admin/hotels',
+      url: `${host}/admin/hotels`,
     })
       .then((result) => {
         if (result.error) {
           return alert(result.message);
         }
 
-        setHotels(result);
+        setTotalHotel(result.length);
       })
       .catch((err) => console.log(err));
   }, [sendRequest]);
 
   // Render value theo page
   useEffect(() => {
-    if (hotels.result) {
-      setCurrentHotels(hotels.result[page - 1].result);
-    }
-  }, [hotels, page]);
+    sendRequest({
+      url: `${host}/admin/hotels?page=${page}&limit=9`,
+    })
+      .then((result) => {
+        if (result.error) {
+          setPage((prev) => prev - 1);
+
+          return alert(result.message);
+        }
+
+        setCurrentHotels(result);
+      })
+      .catch((err) => console.log(err));
+  }, [sendRequest, page]);
 
   return (
     <table>
@@ -137,12 +149,13 @@ const HotelList = () => {
             <div className='pagination'>
               <p>
                 1{currentHotels.length > 1 ? `-${currentHotels.length}` : ''} of{' '}
-                {hotels.total}
+                {totalHotel}
               </p>
 
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
+                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

@@ -1,4 +1,5 @@
 import { roomActions } from './room-slice';
+import { host } from '../store';
 
 // ==================================================
 
@@ -6,16 +7,13 @@ export const getRoom = (roomId) => {
   const token = sessionStorage.getItem('token');
 
   return async (dispatch) => {
-    const response = await fetch(
-      `https://booking-server-6rik.onrender.com/hotels/room/${roomId}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bear ${token}`,
-        },
-        body: null,
-      }
-    );
+    const response = await fetch(`${host}/hotels/room/${roomId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bear ${token}`,
+      },
+      body: null,
+    });
 
     const resData = await response.json();
 

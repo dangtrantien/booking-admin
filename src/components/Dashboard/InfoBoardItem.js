@@ -19,7 +19,11 @@ const InfoBoardItem = (props) => {
           return alert(result.message);
         }
 
-        return setTotal(result.total);
+        if (result.total) {
+          setTotal(result.total);
+        } else {
+          setTotal(result.length);
+        }
       })
       .catch((err) => console.log(err));
   }, [sendRequest, props.url]);
@@ -29,7 +33,9 @@ const InfoBoardItem = (props) => {
       <div className={styles.card}>
         <p className={styles.title}>{props.title}</p>
 
-        <p className={styles.total}>{props.isMoney ? `$ ${total}` : total}</p>
+        <p className={styles.total}>
+          {props.isMoney ? `$ ${total.toLocaleString('de-DE')}` : total}
+        </p>
 
         {props.icon}
       </div>

@@ -1,12 +1,11 @@
 import { hotelActions } from './hotel-slice';
+import { host } from '../store';
 
 // ==================================================
 
 export const getHotel = (hotelId) => {
   return async (dispatch) => {
-    const response = await fetch(
-      `https://booking-server-6rik.onrender.com/hotels/hotel/${hotelId}`
-    );
+    const response = await fetch(`${host}/hotels/hotel/${hotelId}`);
 
     const resData = await response.json();
 
