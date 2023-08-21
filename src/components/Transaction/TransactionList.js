@@ -46,8 +46,8 @@ const TransactionList = () => {
 
           return {
             ...resData,
-            user: user[0].username,
-            hotel: hotel[0].name,
+            user: resData.user[0]?.username,
+            hotel: resData.hotel[0]?.name,
             room: newRoomList,
           };
         });
