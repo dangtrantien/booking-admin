@@ -41,8 +41,19 @@ const TransactionList = () => {
           return alert(result.message);
         }
 
+        const pageData = result.data.map((resData) => {
+          const newRoomList = resData.room?.map((r) => r.roomNumber);
+
+          return {
+            ...resData,
+            user: user[0].username,
+            hotel: hotel[0].name,
+            room: newRoomList,
+          };
+        });
+
         setTotalTransaction(result.total);
-        setCurrentTransactions(result.data);
+        setCurrentTransactions(pageData);
       })
       .catch((err) => console.log(err));
   }, [sendRequest, page]);
@@ -89,8 +100,8 @@ const TransactionList = () => {
               <input type='checkbox' />
             </td>
             <td>{transaction._id}</td>
-            <td>{transaction.user?.username}</td>
-            <td>{transaction.hotel?.name}</td>
+            <td>{transaction.user}</td>
+            <td>{transaction.hotel}</td>
             <td>{transaction.room.join(', ')}</td>
             <td>
               {transaction.dateStart} - {transaction.dateEnd}
