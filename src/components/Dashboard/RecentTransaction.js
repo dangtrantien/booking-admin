@@ -23,6 +23,7 @@ const RecentTransaction = () => {
           return alert(result.message);
         }
 
+        // Chỉ lấy số phòng
         const newResult = result.map((resData) => {
           const roomNumberList = [];
 

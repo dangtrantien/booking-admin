@@ -11,7 +11,7 @@ import { MdOutlineAccountBalanceWallet } from 'react-icons/md';
 const infoList = [
   {
     id: 'i1',
-    url: `${host}/admin/users`,
+    url: `${host}/admin/users?page=1&limit=9`,
     title: 'Users',
     icon: (
       <div
@@ -25,7 +25,7 @@ const infoList = [
   },
   {
     id: 'i2',
-    url: `${host}/admin/transactions`,
+    url: `${host}/admin/transactions?page=1&limit=9`,
     title: 'Orders',
     icon: (
       <div

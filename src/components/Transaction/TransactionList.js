@@ -14,28 +14,22 @@ const TransactionList = () => {
   const [currentTransactions, setCurrentTransactions] = useState([]);
   const [page, setPage] = useState(1);
 
+  // Tổng số page
+  let totalPage = 1;
+
+  if (totalTransaction > 9) {
+    while (totalPage <= Math.round(totalTransaction / 9)) {
+      totalPage++;
+    }
+  }
+
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => prev + 1);
+      setPage((prev) => (prev === totalPage ? 1 : prev + 1));
     } else {
-      setPage((prev) => prev - 1);
+      setPage((prev) => (prev === 1 ? totalPage : prev - 1));
     }
   };
-
-  // Set total transaction
-  useEffect(() => {
-    sendRequest({
-      url: `${host}/admin/transactions`,
-    })
-      .then((result) => {
-        if (result.error) {
-          return alert(result.message);
-        }
-
-        setTotalTransaction(result.length);
-      })
-      .catch((err) => console.log(err));
-  }, [sendRequest]);
 
   // Render value theo page
   useEffect(() => {
@@ -44,12 +38,11 @@ const TransactionList = () => {
     })
       .then((result) => {
         if (result.error) {
-          setPage((prev) => prev - 1);
-
           return alert(result.message);
         }
 
-        setCurrentTransactions(result);
+        setTotalTransaction(result.total);
+        setCurrentTransactions(result.data);
       })
       .catch((err) => console.log(err));
   }, [sendRequest, page]);
@@ -140,7 +133,6 @@ const TransactionList = () => {
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
-                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

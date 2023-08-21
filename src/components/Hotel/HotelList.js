@@ -16,11 +16,20 @@ const HotelList = () => {
   const [currentHotels, setCurrentHotels] = useState([]);
   const [page, setPage] = useState(1);
 
+  // Tổng số page
+  let totalPage = 1;
+
+  if (totalHotel > 9) {
+    while (totalPage <= Math.round(totalHotel / 9)) {
+      totalPage++;
+    }
+  }
+
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => prev + 1);
+      setPage((prev) => (prev === totalPage ? 1 : prev + 1));
     } else {
-      setPage((prev) => prev - 1);
+      setPage((prev) => (prev === 1 ? totalPage : prev - 1));
     }
   };
 
@@ -45,21 +54,6 @@ const HotelList = () => {
     }
   };
 
-  // Set total hotel
-  useEffect(() => {
-    sendRequest({
-      url: `${host}/admin/hotels`,
-    })
-      .then((result) => {
-        if (result.error) {
-          return alert(result.message);
-        }
-
-        setTotalHotel(result.length);
-      })
-      .catch((err) => console.log(err));
-  }, [sendRequest]);
-
   // Render value theo page
   useEffect(() => {
     sendRequest({
@@ -67,12 +61,11 @@ const HotelList = () => {
     })
       .then((result) => {
         if (result.error) {
-          setPage((prev) => prev - 1);
-
           return alert(result.message);
         }
 
-        setCurrentHotels(result);
+        setTotalHotel(result.total);
+        setCurrentHotels(result.data);
       })
       .catch((err) => console.log(err));
   }, [sendRequest, page]);
@@ -155,7 +148,6 @@ const HotelList = () => {
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
-                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

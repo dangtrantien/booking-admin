@@ -14,26 +14,22 @@ const UserList = () => {
   const [currentUsers, setCurrentUsers] = useState([]);
   const [page, setPage] = useState(1);
 
+  // Tổng số page
+  let totalPage = 1;
+
+  if (totalUser > 9) {
+    while (totalPage <= Math.round(totalUser / 9)) {
+      totalPage++;
+    }
+  }
+
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => prev + 1);
+      setPage((prev) => (prev === totalPage ? 1 : prev + 1));
     } else {
-      setPage((prev) => prev - 1);
+      setPage((prev) => (prev === 1 ? totalPage : prev - 1));
     }
   };
-
-  // Set total user
-  useEffect(() => {
-    sendRequest({ url: `${host}/admin/users` })
-      .then((result) => {
-        if (result.error) {
-          return alert(result.message);
-        }
-
-        setTotalUser(result.length);
-      })
-      .catch((err) => console.log(err));
-  }, [sendRequest]);
 
   // Render value theo page
   useEffect(() => {
@@ -42,12 +38,11 @@ const UserList = () => {
     })
       .then((result) => {
         if (result.error) {
-          setPage((prev) => prev - 1);
-
           return alert(result.message);
         }
 
-        setCurrentUsers(result);
+        setTotalUser(result.total);
+        setCurrentUsers(result.data);
       })
       .catch((err) => console.log(err));
   }, [sendRequest, page]);
@@ -113,7 +108,6 @@ const UserList = () => {
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
-                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>

@@ -16,11 +16,20 @@ const RoomList = () => {
   const [currentRooms, setCurrentRooms] = useState([]);
   const [page, setPage] = useState(1);
 
+  // Tổng số page
+  let totalPage = 1;
+
+  if (totalRoom > 9) {
+    while (totalPage <= Math.round(totalRoom / 9)) {
+      totalPage++;
+    }
+  }
+
   const pageChangeHandler = (direction) => {
     if (direction === 'next') {
-      setPage((prev) => prev + 1);
+      setPage((prev) => (prev === totalPage ? 1 : prev + 1));
     } else {
-      setPage((prev) => prev - 1);
+      setPage((prev) => (prev === 1 ? totalPage : prev - 1));
     }
   };
 
@@ -45,19 +54,6 @@ const RoomList = () => {
     }
   };
 
-  // Set total room
-  useEffect(() => {
-    sendRequest({ url: `${host}/admin/rooms` })
-      .then((result) => {
-        if (result.error) {
-          return alert(result.message);
-        }
-
-        setTotalRoom(result.length);
-      })
-      .catch((err) => console.log(err));
-  }, [sendRequest]);
-
   // Render value theo page
   useEffect(() => {
     sendRequest({
@@ -65,12 +61,11 @@ const RoomList = () => {
     })
       .then((result) => {
         if (result.error) {
-          setPage((prev) => prev - 1);
-
           return alert(result.message);
         }
 
-        setCurrentRooms(result);
+        setTotalRoom(result.total);
+        setCurrentRooms(result.data);
       })
       .catch((err) => console.log(err));
   }, [sendRequest, page]);
@@ -153,7 +148,6 @@ const RoomList = () => {
               <button
                 type='button'
                 onClick={pageChangeHandler.bind(null, 'prev')}
-                disabled={page === 1}
               >
                 <FaAngleLeft />
               </button>
