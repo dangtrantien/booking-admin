@@ -69,6 +69,117 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-# Link Deploy
+## Link Deploy
 
 This project was deploy here: [https://booking-admin-ashm.onrender.com](https://booking-admin-ashm.onrender.com)
+
+### This project has following structures:
+
+```
+public
+  ├─ favicon.ico
+  ├─ index.html
+  ├─ logo192.png
+  ├─ logo512.png
+  ├─ manifest.json
+  └─ robots.txt
+src
+  ├─ components
+  │   │─ Authentication
+  │   │   │─ AuthWrapper.js
+  │   │   │─ AuthWrapper.module.css
+  │   │   └─ LoginForm.js
+  │   │─ Dashboard
+  │   │   │─ InfoBoard.js
+  │   │   │─ InfoBoard.module.css
+  │   │   │─ InfoBoardItem.js
+  │   │   │─ InfoBoardItem.module.css
+  │   │   │─ RecentTransaction.js
+  │   │   └─ RecentTransaction.module.css
+  │   │─ Hotel
+  │   │   │─ HotelForm.js
+  │   │   │─ HotelForm.module.css
+  │   │   └─ HotelList.js
+  │   ├─ Layout
+  │   │   │─ Sidebar
+  │   │   │   │─ Sidebar.js
+  │   │   │   └─ Sidebar.module.css
+  │   │   │─ Header.js
+  │   │   └─ Header.module.css
+  │   ├─ Room
+  │   │   │─ RoomForm.js
+  │   │   │─ RoomForm.module.css
+  │   │   └─ RoomList.js
+  │   ├─ Transaction
+  │   │   └─ TransactionList.js
+  │   ├─ UI
+  │   │   │─ Card.js
+  │   │   │─ Card.module.css
+  │   │   │─ Error.js
+  │   │   │─ Error.module.css
+  │   │   │─ IsLoading.js
+  │   │   └─ IsLoading.module.css
+  │   └─ User
+  │       └─ UserList.js
+  ├─ hooks
+  │   └─ use-http.js
+  │─ pages
+  │   ├─ Auth
+  │   │   └─ Login.js
+  │   ├─ Hotel
+  │   │   │─ Hotels.js
+  │   │   └─ NewHotel.js
+  │   ├─ Layout
+  │   │   │─ MainLayout.js
+  │   │   └─ MiniLayout.js
+  │   ├─ Room
+  │   │   │─ NewRoom.js
+  │   │   └─ Rooms.js
+  │   ├─ Dashboard.js
+  │   ├─ Transactions.js
+  │   └─ Users.js
+  │─ store
+  │   ├─ hotel
+  │   │   │─ hotel-actions.js
+  │   │   └─ hotel-slice.js
+  │   ├─ room
+  │   │   │─ room-actions.js
+  │   │   └─ room-slice.js
+  │   ├─ transaction
+  │   │   └─ transaction-slice.js
+  │   └─ store.js
+  │─ App.js
+  │─ index.css
+  └─ index.js
+.gitignore
+package-lock.json
+package.json
+```
+
+- public: Folder contains root HTML for the Website.
+- src: Folder contains main code for building the Website:
+  - .css & .module.css: File CSS contains code for styling the Website.
+  - Authentication: Folder contains file to create structure for the Signin page.
+  - Dashboard: Folder contains file to create structure for the Dashboard page.
+  - Hotel: Folder contains file to create structure for the Hotel page.
+  - Layout: Folder contains file to create navbar and sidebar for the Website.
+  - Room: Folder contains file to create structure for the Room page.
+  - Transaction: Folder contains file to create structure for the Transaction page.
+  - Card.js: File contains code to create card container.
+  - Error.js: File contains code to display the 404 page.
+  - IsLoading.js: File contains code to create loading status before display a page.
+  - User: Folder contains file to create structure for the User page.
+  - use-http.js: File contains code to fetch data with Hooks.
+  - Login.js: File contains code to display the Signin page.
+  - Hotels.js: File contains code to display the Hotel page.
+  - NewHotel.js: File contains code to display the Add-new-hotel page.
+  - Layout: Folder contains file to display the layout of the Website.
+  - Rooms.js: File contains code to display the Room page.
+  - NewRoom.js: File contains code to display the Add-new-room page.
+  - Dashboard.js: File contains code to display the Dashboard page.
+  - Transactions.js: File contains code to display the Transaction page.
+  - Users.js: File contains code to display the User page.
+  - store: Folder contains file to storing data with redux for the Website.
+  - App.js & index.js: File contains code to create router path for the Website.
+- .gitignore: File contains code to ignore some folder when pushing project on Github.
+- package.json & package-lock.json: File contains libraries code for building the Website.
