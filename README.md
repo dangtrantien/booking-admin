@@ -71,7 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## Link Deploy
 
-This project was deploy here: [https://booking-admin-ashm.onrender.com](https://booking-admin-ashm.onrender.com)
+This project was deploy here: [https://booking-admin-dangtrantien.vercel.app](https://booking-admin-dangtrantien.vercel.app)
 
 ### This project has following structures:
 
